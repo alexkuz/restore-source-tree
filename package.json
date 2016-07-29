@@ -1,6 +1,6 @@
 {
   "name": "restore-source-tree",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Restores file structure from source map",
   "main": "index.js",
   "bin": {

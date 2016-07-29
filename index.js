@@ -8,7 +8,7 @@ const WEBPACK_PREFIX = 'webpack:///';
 const WEBPACK_FOOTER = '/** WEBPACK FOOTER **';
 
 const program = new Command('restore-source-tree')
-  .version('0.1.0')
+  .version('0.1.1')
   .usage('[options] <file>')
   .description('Restores file structure from source map')
   .option('-o, --out-dir [dir]', 'Output directory (\'output\' by default)', 'output')
