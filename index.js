@@ -78,7 +78,7 @@ function processFile(filename) {
   console.log(`Processed ${sources.length} files`);
 }
 
-const filename = path.resolve(__dirname, program.args[0]);
+const filename = program.args[0];
 
 fs.access(filename, err => {
   if (err) {
