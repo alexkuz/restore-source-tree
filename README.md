@@ -17,7 +17,4 @@ Restores file structure from source map (only Webpack source map files supported
 * 添加了对重复引用文件还原的过滤
 
 # 使用方法
-通过git远程安装
-> npm install -g https://github.com/zct1989/restore-source-tree.git 
-
-> restore-source-tree -n -r -o ./output sourceDir
+npm install 
