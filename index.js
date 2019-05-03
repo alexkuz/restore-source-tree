@@ -7,7 +7,7 @@ import glob from 'glob';
 import { version } from './package.json';
 
 const WEBPACK_PREFIX = 'webpack:///';
-const WEBPACK_FOOTER = '/** WEBPACK FOOTER **';
+const WEBPACK_FOOTER = ['/** WEBPACK FOOTER', '// WEBPACK FOOTER'];
 
 const program = new Command('restore-source-tree')
   .version(version)
@@ -45,7 +45,10 @@ const getSourceList = smc => {
 }
 
 const trimFooter = (str) => {
-  const index = str.indexOf(WEBPACK_FOOTER);
+  const index = WEBPACK_FOOTER.reduce((result, footer) => {
+    if (result >= 0) return result;
+    return str.indexOf(footer);
+  }, -1);
   if (index < 0) return str;
   return str.substr(0, index).trimRight() + '\n';
 };
