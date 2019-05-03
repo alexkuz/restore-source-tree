@@ -3,12 +3,14 @@ import path from 'path';
 import mkdirp from 'mkdirp';
 import { SourceMapConsumer } from 'source-map';
 import { Command } from 'commander';
+import glob from 'glob';
+import { version } from './package.json';
 
 const WEBPACK_PREFIX = 'webpack:///';
-const WEBPACK_FOOTER = '/** WEBPACK FOOTER **';
+const WEBPACK_FOOTER = [/\/*[*\s]+WEBPACK FOOTER/, /\/\/ WEBPACK FOOTER/];
 
 const program = new Command('restore-source-tree')
-  .version('0.1.1')
+  .version(version)
   .usage('[options] <file>')
   .description('Restores file structure from source map')
   .option('-o, --out-dir [dir]', 'Output directory (\'output\' by default)', 'output')
@@ -42,7 +44,16 @@ const getSourceList = smc => {
   return sources;
 }
 
-const trimFooter = str => str.substr(0, str.indexOf(WEBPACK_FOOTER)).trimRight() + '\n';
+const trimFooter = (str) => {
+  const index = WEBPACK_FOOTER.reduce((result, footer) => {
+    if (result >= 0) return result;
+    const match = footer.exec(str);
+    if (!match) return -1;
+    return match.index;
+  }, -1);
+  if (index < 0) return str;
+  return str.substr(0, index).trimRight() + '\n';
+};
 
 const saveSourceContent = (smc, filePath, src) => {
   const content = trimFooter(smc.sourceContentFor(src));
@@ -78,14 +89,14 @@ function processFile(filename) {
   console.log(`Processed ${sources.length} files`);
 }
 
-const filename = program.args[0];
-
-fs.access(filename, err => {
-  if (err) {
+program.args
+.map(pattern => glob.sync(pattern))
+.reduce((prev, curr) => prev.concat(curr), [])
+.forEach((filename) => {
+  try {
+    fs.accessSync(filename);
+    processFile(filename);
+  } catch (err) {
     console.error(err.message);
-    process.exit(1);
   }
-
-  processFile(filename);
 });
-
