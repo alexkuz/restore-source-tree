@@ -43,7 +43,11 @@ const getSourceList = smc => {
   return sources;
 }
 
-const trimFooter = str => str.substr(0, str.indexOf(WEBPACK_FOOTER)).trimRight() + '\n';
+const trimFooter = (str) => {
+  const index = str.indexOf(WEBPACK_FOOTER);
+  if (index < 0) return str;
+  return str.substr(0, index).trimRight() + '\n';
+};
 
 const saveSourceContent = (smc, filePath, src) => {
   const content = trimFooter(smc.sourceContentFor(src));
