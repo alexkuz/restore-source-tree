@@ -83,14 +83,11 @@ function processFile(filename) {
   console.log(`Processed ${sources.length} files`);
 }
 
-const filename = program.args[0];
-
-fs.access(filename, err => {
-  if (err) {
+program.args.forEach((filename) => {
+  try {
+    fs.accessSync(filename);
+    processFile(filename);
+  } catch (err) {
     console.error(err.message);
-    process.exit(1);
   }
-
-  processFile(filename);
 });
-

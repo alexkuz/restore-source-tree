@@ -6,5 +6,5 @@ Restores file structure from source map (only Webpack source map files supported
 ```sh
 > npm i -g restore-source-tree
 
-> restore-source-tree --out-dir <OUT_DIR> <FILE>
+> restore-source-tree --out-dir <OUT_DIR> <FILE1> <FILE2> <FILE3>
 ```
