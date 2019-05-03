@@ -3,6 +3,7 @@ import path from 'path';
 import mkdirp from 'mkdirp';
 import { SourceMapConsumer } from 'source-map';
 import { Command } from 'commander';
+import glob from 'glob';
 import { version } from './package.json';
 
 const WEBPACK_PREFIX = 'webpack:///';
@@ -83,7 +84,10 @@ function processFile(filename) {
   console.log(`Processed ${sources.length} files`);
 }
 
-program.args.forEach((filename) => {
+program.args
+.map(pattern => glob.sync(pattern))
+.reduce((prev, curr) => prev.concat(curr), [])
+.forEach((filename) => {
   try {
     fs.accessSync(filename);
     processFile(filename);
