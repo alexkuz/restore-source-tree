@@ -3,12 +3,13 @@ import path from 'path';
 import mkdirp from 'mkdirp';
 import { SourceMapConsumer } from 'source-map';
 import { Command } from 'commander';
+import { version } from './package.json';
 
 const WEBPACK_PREFIX = 'webpack:///';
 const WEBPACK_FOOTER = '/** WEBPACK FOOTER **';
 
 const program = new Command('restore-source-tree')
-  .version('0.1.1')
+  .version(version)
   .usage('[options] <file>')
   .description('Restores file structure from source map')
   .option('-o, --out-dir [dir]', 'Output directory (\'output\' by default)', 'output')
